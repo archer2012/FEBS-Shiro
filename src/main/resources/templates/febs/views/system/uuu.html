@@ -1,0 +1,13 @@
+<div class="layui-fluid layui-anim febs-anim" id="febs-dept" lay-title="看板">
+    <iframe id="barframe"  src="" style="width: 100%" height="1100px"></iframe>
+</div>
+
+
+<script type="text/javascript">
+layui.use(['jquery', 'layer'], function () {
+    let $ = layui.jquery
+    layer.ready(function(){
+          document.getElementById("barframe").src ="[[${myurl}]]"
+    });
+})
+</script>

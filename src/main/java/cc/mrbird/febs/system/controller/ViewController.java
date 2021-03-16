@@ -10,6 +10,9 @@ import cc.mrbird.febs.system.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.session.ExpiredSessionException;
+import org.springframework.security.jwt.Jwt;
+import org.springframework.security.jwt.JwtHelper;
+import org.springframework.security.jwt.crypto.sign.MacSigner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -93,6 +96,34 @@ public class ViewController extends BaseController {
     @RequiresPermissions("user:view")
     public String systemUser() {
         return FebsUtil.view("system/user/user");
+    }
+
+    @GetMapping(FebsConstant.VIEW_PREFIX + "system/uuu/{dashboardid}")
+    @RequiresPermissions("uuu:view")
+    public String Uuu(@PathVariable int dashboardid, Model model) {
+        resolveUserModel2(dashboardid, model);
+
+        return FebsUtil.view("system/uuu");
+    }
+
+    private void
+
+
+    resolveUserModel2(int dashboardid, Model model) {
+        User currentUser = super.getCurrentUser();
+        Long userId = currentUser.getUserId();
+        String dashboardFilter = userService.findFilterByUserIdAndDashboardId(userId,dashboardid);
+        String iframUrl = metabaseToken(dashboardid,dashboardFilter);
+        model.addAttribute("myurl", iframUrl);
+    }
+    private final String METABASE_SITE_URL = "https://bi.q1oa.com";
+    private final String METABASE_SECRET_KEY = "f1817928abdae4f0caafe40115df049e4a847b6bb6b5567fbf85d67e6b80f54f";
+
+    private String metabaseToken(int dashboardid, String dashboardFilter) {
+
+        Jwt token = JwtHelper.encode("{\"resource\": {\"dashboard\": "+dashboardid+"}, \"params\": {"+dashboardFilter+"}}", new MacSigner(METABASE_SECRET_KEY));
+        String url = METABASE_SITE_URL + "/embed/dashboard/" + token.getEncoded() + "#bordered=true&titled=true";
+        return url;
     }
 
     @GetMapping(FebsConstant.VIEW_PREFIX + "system/user/add")

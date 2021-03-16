@@ -216,6 +216,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setStringPermissions(permissionSet);
     }
 
+    @Override
+    public String findFilterByUserIdAndDashboardId(Long userId, int dashboardid) {
+        String dFilter = baseMapper.findUserDashboardFilter(userId,dashboardid);
+        return dFilter;
+    }
+
     private void setUserRoles(User user, String[] roles) {
         List<UserRole> userRoles = new ArrayList<>();
         Arrays.stream(roles).forEach(roleId -> {

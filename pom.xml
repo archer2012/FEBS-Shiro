@@ -30,6 +30,7 @@
         <shiro.ehcache.version>1.7.1</shiro.ehcache.version>
         <google.guava.version>30.1-jre</google.guava.version>
         <springfox.swagger.version>3.0.0</springfox.swagger.version>
+        <spring-security.version>5.1.2.RELEASE</spring-security.version>
         <dynamic.datasource.version>3.3.1</dynamic.datasource.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <thymeleaf-extras-shiro.version>2.0.0</thymeleaf-extras-shiro.version>
@@ -47,6 +48,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-jwt</artifactId>
+            <version>1.0.7.RELEASE</version>
+        </dependency>
+
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>

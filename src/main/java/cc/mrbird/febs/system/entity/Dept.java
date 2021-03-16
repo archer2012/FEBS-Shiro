@@ -46,6 +46,21 @@ public class Dept implements Serializable {
     private String deptName;
 
     /**
+     * 看板过滤条件
+     */
+    @TableField("DASHBOARD_FILTER")
+    @Size(max = 100, message = "{noMoreThan}")
+    @ExcelField(value = "看板过滤条件")
+    private String dashboardFliter;
+
+    /**
+     * 看板id
+     */
+    @TableField("DASHBOARD_ID")
+    @ExcelField(value = "看板id")
+    private Long dashboardId;
+
+    /**
      * 排序
      */
     @TableField("ORDER_NUM")

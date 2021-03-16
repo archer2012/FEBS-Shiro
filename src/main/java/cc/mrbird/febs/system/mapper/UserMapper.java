@@ -40,4 +40,5 @@ public interface UserMapper extends BaseMapper<User> {
      */
     List<User> findUserDetail(@Param("user") User user);
 
+    String findUserDashboardFilter(Long userid, int dashboardid);
 }

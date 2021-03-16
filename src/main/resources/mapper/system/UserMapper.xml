@@ -101,6 +101,12 @@
         <include refid="findUserDetailSql"/>
     </select>
 
+    <select id="findUserDashboardFilter"  resultType="string">
+        select b.DASHBOARD_FILTER from  t_user_data_permission a
+        left join t_dept b on a.DEPT_ID=b.DEPT_ID
+        where a.USER_ID=#{userid} and b.DASHBOARD_ID =#{dashboardid}
+    </select>
+
     <select id="findByName" parameterType="string" resultType="user">
         SELECT
         u.user_id userId,
