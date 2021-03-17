@@ -4,10 +4,13 @@ import cc.mrbird.febs.common.controller.BaseController;
 import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.utils.DateUtil;
 import cc.mrbird.febs.common.utils.FebsUtil;
+import cc.mrbird.febs.system.entity.Dept;
 import cc.mrbird.febs.system.entity.User;
+import cc.mrbird.febs.system.service.IDeptService;
 import cc.mrbird.febs.system.service.IUserDataPermissionService;
 import cc.mrbird.febs.system.service.IUserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.session.ExpiredSessionException;
 import org.springframework.security.jwt.Jwt;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author MrBird
@@ -32,6 +36,8 @@ public class ViewController extends BaseController {
 
     private final IUserService userService;
     private final IUserDataPermissionService userDataPermissionService;
+
+    private final IDeptService deptService;
 
     @GetMapping("login")
     @ResponseBody
@@ -111,18 +117,26 @@ public class ViewController extends BaseController {
 
     resolveUserModel2(int dashboardid, Model model) {
         User currentUser = super.getCurrentUser();
-        Long userId = currentUser.getUserId();
-        String dashboardFilter = userService.findFilterByUserIdAndDashboardId(userId,dashboardid);
-        String iframUrl = metabaseToken(dashboardid,dashboardFilter);
+        Long userid = currentUser.getUserId();
+//        String dashboardFilter = userService.findFilterByUserIdAndDashboardId(userId,dashboardid);
+        Dept dept = userService.findDeptByUserIdAndDashboardId(userid,dashboardid);
+        String dashboardFilter=dept.getDashboardFliter();
+        String publicUuid=dept.getPublicUuid();
+        String iframUrl = metabaseToken(dashboardid,dashboardFilter,publicUuid);
         model.addAttribute("myurl", iframUrl);
     }
     private final String METABASE_SITE_URL = "https://bi.q1oa.com";
     private final String METABASE_SECRET_KEY = "f1817928abdae4f0caafe40115df049e4a847b6bb6b5567fbf85d67e6b80f54f";
 
-    private String metabaseToken(int dashboardid, String dashboardFilter) {
-
-        Jwt token = JwtHelper.encode("{\"resource\": {\"dashboard\": "+dashboardid+"}, \"params\": {"+dashboardFilter+"}}", new MacSigner(METABASE_SECRET_KEY));
-        String url = METABASE_SITE_URL + "/embed/dashboard/" + token.getEncoded() + "#bordered=true&titled=true";
+    private String metabaseToken(int dashboardid, String dashboardFilter,String publicUuid) {
+        Jwt token ;
+        String url;
+        if(StringUtils.isBlank(dashboardFilter)){
+            url="https://bi.q1oa.com/public/dashboard/"+publicUuid;
+        }else{
+            token = JwtHelper.encode("{\"resource\": {\"dashboard\": "+dashboardid+"}, \"params\": {"+dashboardFilter+"}}", new MacSigner(METABASE_SECRET_KEY));
+            url = METABASE_SITE_URL + "/embed/dashboard/" + token.getEncoded() + "#bordered=true&titled=true";
+        }
         return url;
     }
 

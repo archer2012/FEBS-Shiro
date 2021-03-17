@@ -101,10 +101,20 @@
         <include refid="findUserDetailSql"/>
     </select>
 
-    <select id="findUserDashboardFilter"  resultType="string">
-        select b.DASHBOARD_FILTER from  t_user_data_permission a
-        left join t_dept b on a.DEPT_ID=b.DEPT_ID
-        where a.USER_ID=#{userid} and b.DASHBOARD_ID =#{dashboardid}
+    <select id="findDeptByUserIdAndDashboardId"  resultType="dept">
+        select
+        b.DEPT_ID,
+        b.PARENT_ID,
+        b.DEPT_NAME,
+        b.ORDER_NUM,
+        b.CREATE_TIME,
+        b.MODIFY_TIME,
+        b.DASHBOARD_FILTER as dashboardFliter,
+        b.DASHBOARD_ID,
+        b.PUBLIC_UUID as publicUuid
+        from  t_user_data_permission a
+        inner join t_dept b on a.DEPT_ID=b.DEPT_ID
+        where a.USER_ID=#{userid} and b.DASHBOARD_ID =#{dashboardid} limit 1
     </select>
 
     <select id="findByName" parameterType="string" resultType="user">

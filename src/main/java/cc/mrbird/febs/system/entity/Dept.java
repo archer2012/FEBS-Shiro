@@ -61,6 +61,13 @@ public class Dept implements Serializable {
     private Long dashboardId;
 
     /**
+     * public_uuid
+     */
+    @TableField("PUBLIC_UUID")
+    @ExcelField(value = "public_uuid")
+    private String publicUuid;
+
+    /**
      * 排序
      */
     @TableField("ORDER_NUM")

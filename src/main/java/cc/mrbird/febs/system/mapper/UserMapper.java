@@ -1,5 +1,6 @@
 package cc.mrbird.febs.system.mapper;
 
+import cc.mrbird.febs.system.entity.Dept;
 import cc.mrbird.febs.system.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -40,5 +41,5 @@ public interface UserMapper extends BaseMapper<User> {
      */
     List<User> findUserDetail(@Param("user") User user);
 
-    String findUserDashboardFilter(Long userid, int dashboardid);
+    Dept findDeptByUserIdAndDashboardId(Long userid, int dashboardid);
 }

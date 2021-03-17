@@ -66,6 +66,14 @@
                         </div>
 
                         <div class="layui-form-item">
+                            <label class="layui-form-label">public_uuid：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="publicUuid" autocomplete="off" class="layui-input"
+                                       minlength="36" maxlength="36" lay-verify="range">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
                             <label class="layui-form-label">看板过滤条件：</label>
                             <div class="layui-input-block">
                                 <input type="text" name="dashboardFliter" autocomplete="off"  class="layui-input">
@@ -108,6 +116,7 @@
             $deptName = $searchForm.find('input[name="deptName"]'),
             $dashboardFliter = $searchForm.find('input[name="dashboardFliter"]'),
             $dashboardId=$searchForm.find('input[name="dashboardId"]'),
+            $publicUuid=$searchForm.find('input[name="publicUuid"]'),
             _currentDeptData,
             deptXmlSelect,
             _deptTree;
@@ -153,6 +162,7 @@
             form.val("dept-form", {
                 "deptName": data.deptName,
                 "dashboardId":data.dashboardId,
+                "publicUuid":data.publicUuid,
                 "dashboardFliter":data.dashboardFliter,
                 "orderNum": data.orderNum,
                 "createTime": data.createTime,

@@ -217,10 +217,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public String findFilterByUserIdAndDashboardId(Long userId, int dashboardid) {
-        String dFilter = baseMapper.findUserDashboardFilter(userId,dashboardid);
-        return dFilter;
+    public Dept findDeptByUserIdAndDashboardId(Long userid, int dashboardid) {
+        Dept dept = baseMapper.findDeptByUserIdAndDashboardId(userid,dashboardid);
+        return dept;
     }
+
 
     private void setUserRoles(User user, String[] roles) {
         List<UserRole> userRoles = new ArrayList<>();

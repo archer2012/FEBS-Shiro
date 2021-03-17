@@ -46,11 +46,6 @@
                                         </div>
                                     </div>
                                     <div class="layui-inline">
-                                        <label class="layui-form-label layui-form-label-sm">部门</label>
-                                        <div class="layui-input-inline" id="dept">
-                                        </div>
-                                    </div>
-                                    <div class="layui-inline">
                                         <label class="layui-form-label layui-form-label-sm">性别</label>
                                         <div class="layui-input-inline">
                                             <select name="sex">
@@ -127,8 +122,7 @@
             sortObject = {field: 'createTime', type: null},
             tableIns,
             createTimeFrom,
-            createTimeTo,
-            deptXmlSelect;
+            createTimeTo;
 
         form.render();
 
@@ -209,36 +203,6 @@
             }]
         });
 
-        deptXmlSelect = xmSelect.render({
-            el: '#dept',
-            model: {label: {type: 'text'}},
-            tree: {
-                show: true,
-                strict: false,
-                showLine: false,
-                clickCheck: true,
-                expandedKeys: [-1],
-            },
-            name: 'deptId',
-            theme: {
-                color: '#52c41a',
-            },
-            prop: {
-                value: 'id'
-            },
-            height: 'auto',
-            on: function(data){
-                if(data.isAdd){
-                    return data.change.slice(0, 1)
-                }
-            }
-        });
-
-        febs.get(ctx + 'dept/select/tree', null, function (data) {
-            deptXmlSelect.update(
-                data
-            )
-        });
 
         table.on('tool(userTable)', function (obj) {
             let data = obj.data,
@@ -286,7 +250,6 @@
         $reset.on('click', function () {
             $searchForm[0].reset();
             sortObject.type = 'null';
-            deptXmlSelect.setValue(['']);
             createTimeTo = null;
             createTimeFrom = null;
             tableIns.reload({where: getQueryParams(true), page: {curr: 1}, initSort: sortObject});
@@ -301,7 +264,6 @@
                     {type: 'checkbox'},
                     {field: 'username', title: '用户名', minWidth: 100},
                     {title: '性别', templet: '#user-sex'},
-                    {field: 'deptName', title: '部门'},
                     {field: 'mobile', title: '手机', minWidth: 165},
                     {field: 'email', title: '邮箱', minWidth: 180},
                     {title: '状态', templet: '#user-status'},
@@ -312,12 +274,7 @@
         }
 
         function getQueryParams(flag) {
-            deptId = deptXmlSelect.getValue('valueStr');
-            if (flag) {
-                deptId = '';
-            }
             let params = $searchForm.serializeJson();
-            params.deptId = deptId;
             let createTime = params.time;
             if (createTime) {
                 createTimeFrom = createTime.split(' - ')[0];

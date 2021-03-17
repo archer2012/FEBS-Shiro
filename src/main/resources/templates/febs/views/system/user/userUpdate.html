@@ -36,10 +36,6 @@
             <div class="layui-input-block" id="user-update-role"></div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">部门：</label>
-            <div class="layui-input-block" id="user-update-dept"></div>
-        </div>
-        <div class="layui-form-item">
             <label class="layui-form-label febs-form-item-require">状态：</label>
             <div class="layui-input-block">
                 <input type="radio" name="status" value="1" title="有效">
@@ -81,38 +77,12 @@
             user = [[${user}]],
             validate = layui.validate,
             dataPermissionXmlSelect,
-            roleXmSelect,
-            deptXmlSelect;
+            roleXmSelect;
 
         form.verify(validate);
         form.render();
 
         initUserValue();
-
-        deptXmlSelect = xmSelect.render({
-            el: '#user-update-dept',
-            model: {label: {type: 'text'}},
-            tree: {
-                show: true,
-                strict: false,
-                showLine: false,
-                clickCheck: true,
-                expandedKeys: [-1],
-            },
-            name: 'deptId',
-            theme: {
-                color: '#52c41a',
-            },
-            prop: {
-                value: 'id'
-            },
-            height: 'auto',
-            on: function (data) {
-                if (data.isAdd) {
-                    return data.change.slice(0, 1)
-                }
-            }
-        });
 
         dataPermissionXmlSelect = xmSelect.render({
             el: '#user-update-data-permission',
@@ -135,9 +105,7 @@
         });
 
         febs.get(ctx + 'dept/select/tree', null, function (data) {
-            deptXmlSelect.update(data)
             dataPermissionXmlSelect.update(data)
-            user.deptId && deptXmlSelect.setValue([user.deptId]);
             user.deptIds && dataPermissionXmlSelect.setValue(user.deptIds.split(","));
         });
 
